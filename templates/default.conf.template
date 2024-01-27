@@ -1,0 +1,25 @@
+ server {
+    listen 80 ssl;
+    ssl_certificate /cert/fullchain.pem;    
+    ssl_certificate_key /cert/privkey.pem;
+
+    location / {
+      return 500;
+    }
+
+    location /api/lotto {
+      resolver 8.8.8.8;
+      set $up_stream https://app.lotto.pl/wyniki/?type=dl;
+      proxy_pass $up_stream;
+      proxy_ssl_server_name on;
+      proxy_hide_header 'Access-Control-Allow-Credentials';
+      proxy_hide_header 'Access-Control-Allow-Headers';
+      proxy_hide_header 'Access-Control-Allow-Methods';
+      proxy_hide_header 'Access-Control-Allow-Origin';
+      proxy_hide_header 'Content-Security-Policy';
+      proxy_hide_header 'Content-Security-Policy-Report-Only';
+
+      add_header 'Access-Control-Allow-Origin' '*';
+      add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+    }
+  }

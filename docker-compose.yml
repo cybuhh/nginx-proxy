@@ -1,0 +1,9 @@
+version: "3"
+services:
+  web:
+    image: nginx
+    volumes:
+    - ./cert:/cert:ro
+    - ./templates:/etc/nginx/templates
+    ports:
+    - "8888:80"
